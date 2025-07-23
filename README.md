@@ -25,26 +25,10 @@ Since 2024-01-01 the default config is set to always activate CAPTCHA verificati
 
 ## Installation
 
-### With Composer
-
-Add this plugin `pbiering/rcguard` to the `require` section of your Roundcube
-`composer.json`, run composer update and enable rcguard in the main Roundcube
-configuration file.
-<br>OR just run:
-
-    composer require pbiering/rcguard
-
 ### Manually
 
 Place the contents of this directory under `plugins/rcguard`.
-
-### Fedora/EL via RPM
-
-until provided by Fedora or EPEL: available via Copr: https://copr.fedorainfracloud.org/coprs/pbiering/InternetServerExtensions/packages/
-
-```
-yum install roundcubemail-plugin-rcguard
-```
+You also need to install the php-curl package.
 
 ## Activation
 
