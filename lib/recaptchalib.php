@@ -92,7 +92,41 @@ class ReCaptcha
         }
 
         $context = stream_context_create($options);
-        return file_get_contents(self::$siteVerifyUrl, false, $context);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, self::$siteVerifyUrl);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+        if ($context) {
+            $stream_context = stream_context_get_options($context);
+    
+            if (isset($stream_context['http']['header'])) {
+                $headers = explode("\r\n", $stream_context['http']['header']);
+                $headers = array_filter($headers, function($value) {
+                    return trim($value) !== '';
+                });
+                curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            }
+    
+            if (isset($stream_context['http']['method'])) {
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $stream_context['http']['method']);
+            }
+    
+            if (isset($stream_context['http']['content'])) {
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $stream_context['http']['content']);
+            }
+        }
+
+        $response = curl_exec($ch);
+
+        if ($response === false) {
+            $error = curl_error($ch);
+            curl_close($ch);
+            throw new Exception("cURL error: " . $error);
+        }
+
+        curl_close($ch);
+        return $response;
     }
 
     /**
