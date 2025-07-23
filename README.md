@@ -28,7 +28,7 @@ Since 2024-01-01 the default config is set to always activate CAPTCHA verificati
 ### Manually
 
 Place the contents of this directory under `plugins/rcguard`.
-You also need to install the php-curl package.
+You also need to install the `php-curl` package.
 
 ## Activation
 
